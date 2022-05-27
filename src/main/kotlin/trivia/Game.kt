@@ -28,15 +28,24 @@ class Game {
         places[players.size] = 0
         purses[players.size] = 0
         println("$playerName was added")
-        println("They are player number " + players.size)
+        println("They are player number ${players.size}")
     }
 
     fun nextPlay() {
-        setNextPlayer()
+        nextPlayer()
         movePlayer()
+        askQuestion()
     }
 
-    fun askQuestion() {
+    fun didPlayerNotWin(): Boolean {
+        val notWins = currentPlayerPursue != 6
+        if (!notWins) {
+            println("$currentPlayerName Wins!!!!!!!")
+        }
+        return notWins
+    }
+
+    private fun askQuestion() {
         println(getQuestion())
         if (Random.nextInt(2) == 1) {
             handleWrongAnswer()
@@ -45,25 +54,17 @@ class Game {
         }
     }
 
-    fun didPlayerNotWin(): Boolean {
-        val notWins = getCurrentPlayerPursue() != 6
-        if (!notWins) {
-            println("${getCurrentPlayer()} Wins!!!!!!!")
-        }
-        return notWins
-    }
-
     private fun movePlayer() {
-        val roll = Random.nextInt(5) + 1
-        println("${getCurrentPlayer()} rolled a $roll")
-        places[currentPlayer] = getCurrentPlayerPlace() + roll
-        if (getCurrentPlayerPlace() > 11) {
-            places[currentPlayer] = getCurrentPlayerPlace() - 12
+        val roll = Random.nextInt(1, 7)
+        println("$currentPlayerName rolled a $roll")
+        places[currentPlayer] = currentPlayerPlace + roll
+        if (currentPlayerPlace > 11) {
+            places[currentPlayer] = currentPlayerPlace - 12
         }
-        println("${getCurrentPlayer()}'s new location is ${getCurrentPlayerPlace()}")
+        println("$currentPlayerName's new location is $currentPlayerPlace")
     }
 
-    private fun getQuestion() = when (getCurrentPlayerPlace()) {
+    private fun getQuestion() = when (currentPlayerPlace) {
         0, 4, 8 -> popQuestions.removeFirst()
         1, 5, 9 -> scienceQuestions.removeFirst()
         2, 6, 10 -> sportsQuestions.removeFirst()
@@ -73,24 +74,24 @@ class Game {
     private fun handleCorrectAnswer() {
         println("Answer was correct!!!!")
         purses[currentPlayer]++
-        println("${getCurrentPlayer()} has ${getCurrentPlayerPursue()} Points.")
+        println("$currentPlayerName has $currentPlayerPursue points")
     }
 
     private fun handleWrongAnswer() {
         println("Question was incorrectly answered")
     }
 
-    private fun setNextPlayer() {
+    private fun nextPlayer() {
         currentPlayer++
         if (currentPlayer == players.size) {
             currentPlayer = 0
         }
-        println("${getCurrentPlayer()} is the current player")
+        println("$currentPlayerName is the current player")
     }
 
-    private fun getCurrentPlayerPlace() = places[currentPlayer]
+    private val currentPlayerPlace get() = places[currentPlayer]
 
-    private fun getCurrentPlayerPursue() = purses[currentPlayer]
+    private val currentPlayerPursue get() = purses[currentPlayer]
 
-    private fun getCurrentPlayer() = players[currentPlayer]
+    private val currentPlayerName get() = players[currentPlayer]
 }

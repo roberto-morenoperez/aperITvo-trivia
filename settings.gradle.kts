@@ -1,3 +1,3 @@
 
-rootProject.name = "kotlin"
+rootProject.name = "aperITvo-trivia"
 

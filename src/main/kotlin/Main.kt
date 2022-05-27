@@ -7,8 +7,5 @@ fun main() {
     game.addPlayer("Pat")
     game.addPlayer("Sue")
 
-    do {
-        game.nextPlay()
-        game.askQuestion()
-    } while (game.didPlayerNotWin())
+    do game.nextPlay() while (game.didPlayerNotWin())
 }
