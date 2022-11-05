@@ -23,26 +23,29 @@ class Game {
         }
     }
 
-    fun addPlayer(playerName: String) {
+    fun run() {
+        do nextPlay() while (thereIsNotWinner())
+    }
+
+    fun addPlayer(playerName: String): Game {
         players.add(playerName)
         places[players.size] = 0
         purses[players.size] = 0
         println("$playerName was added")
         println("They are player number ${players.size}")
+        return this
     }
 
-    fun nextPlay() {
+    private fun nextPlay() {
         nextPlayer()
         movePlayer()
         askQuestion()
     }
 
-    fun didPlayerNotWin(): Boolean {
-        val notWins = currentPlayerPursue != 6
-        if (!notWins) {
-            println("$currentPlayerName Wins!!!!!!!")
-        }
-        return notWins
+    private fun thereIsNotWinner(): Boolean {
+        val isNotWinner = currentPlayerPursue != 6
+        if (!isNotWinner) println("$currentPlayerName Wins!!!!!!!")
+        return isNotWinner
     }
 
     private fun askQuestion() {
