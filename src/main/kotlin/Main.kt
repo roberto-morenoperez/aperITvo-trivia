@@ -5,5 +5,6 @@ fun main() {
         .addPlayer("Chet")
         .addPlayer("Pat")
         .addPlayer("Sue")
+        .addCategories("Rock", "Science", "Pop", "Geography", "Art")
         .run()
 }

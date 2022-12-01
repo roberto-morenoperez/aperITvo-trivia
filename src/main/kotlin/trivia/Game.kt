@@ -2,25 +2,33 @@ package trivia
 
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.List
 import kotlin.random.Random
 
 class Game {
+    private val BOARD_SIZE = 12
     private var players = ArrayList<String>()
-    private var places = IntArray(12)
+    private var places = IntArray(BOARD_SIZE)
     private var purses = IntArray(6)
-    private var popQuestions = LinkedList<String>()
-    private var scienceQuestions = LinkedList<String>()
-    private var sportsQuestions = LinkedList<String>()
-    private var rockQuestions = LinkedList<String>()
     private var currentPlayer = 0
+    private var categories = ArrayList<LinkedList<String>>()
 
-    init {
+    fun addCategories(categoryName1: String,categoryName2: String,categoryName3: String,categoryName4: String,categoryName5: String): Game {
+        categories.add(addCategory(categoryName1))
+        categories.add(addCategory(categoryName2))
+        categories.add(addCategory(categoryName3))
+        categories.add(addCategory(categoryName4))
+        categories.add(addCategory(categoryName5))
+        return this
+    }
+
+    fun addCategory(categoryName : String) : LinkedList<String> {
+        var category = LinkedList<String>()
         for (i in 0..49) {
-            popQuestions.addLast("Pop Question $i")
-            scienceQuestions.addLast("Science Question $i")
-            sportsQuestions.addLast("Sports Question $i")
-            rockQuestions.addLast("Rock Question $i")
+            category.addLast("$categoryName Question $i")
         }
+        println("$categoryName was added")
+        return category
     }
 
     fun run() {
@@ -60,18 +68,23 @@ class Game {
     private fun movePlayer() {
         val roll = Random.nextInt(1, 7)
         println("$currentPlayerName rolled a $roll")
-        places[currentPlayer] = currentPlayerPlace + roll
-        if (currentPlayerPlace > 11) {
-            places[currentPlayer] = currentPlayerPlace - 12
-        }
+        places[currentPlayer] = (currentPlayerPlace + roll ) % BOARD_SIZE
+
         println("$currentPlayerName's new location is $currentPlayerPlace")
     }
 
     private fun getQuestion() = when (currentPlayerPlace) {
-        0, 4, 8 -> popQuestions.removeFirst()
-        1, 5, 9 -> scienceQuestions.removeFirst()
-        2, 6, 10 -> sportsQuestions.removeFirst()
-        else -> rockQuestions.removeFirst()
+        0, 6-> categories[0].removeFirst()
+        1, 7 -> categories[1].removeFirst()
+        2, 8 -> categories[2].removeFirst()
+        3, 9 -> categories[3].removeFirst()
+        4, 10-> categories[4].removeFirst()
+        else -> getRandomQuestion()
+    }
+
+    private fun getRandomQuestion(): String? {
+        var randomTopicIndex = Random.nextInt(categories.size)
+        return categories[randomTopicIndex].removeFirst()
     }
 
     private fun handleCorrectAnswer() {
