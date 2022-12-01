@@ -12,10 +12,6 @@
 
 ----
 
-# What is expected
-
-----
-
 # What is Mindfulness
 
 Mindfulness or Full Attention means consciously paying attention to the experience of the present moment with interest, curiosity and acceptance.
